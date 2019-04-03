@@ -1,0 +1,33 @@
+#c1 {
+    /* position: absolute; */
+    top: 0px;
+    left: 0px;
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph; /*IE*/
+    filter: fliph; /*IE*/
+}
+#overlay {
+    border: solid black 1px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph; /*IE*/
+    filter: fliph; /*IE*/
+}
+#myCanvas {
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph; /*IE*/
+    filter: fliph; /*IE*/
+}
+.container {
+    position: relative;
+    width: 80%;
+    /*margin : 0px auto;*/
+}

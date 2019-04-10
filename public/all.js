@@ -1,6 +1,6 @@
 let vid_width = 300;
 let vid_height = 300;
-let canvas, ctx, vidCanvas, vidCtx, overlay, overlayCC;
+let canvas, ctx, vidCanvas, vidCtx, overlay, overlayCC, result, resultCC;
 let ctrack = new clm.tracker();
 let myCamvas = undefined;
 let circleCenter = { x: 10, y: 10 };
@@ -22,8 +22,10 @@ let currentRadians = 1;
 $(document).ready(() => {
     overlay = document.getElementById("overlay");
     overlayCC = overlay.getContext("2d");
+    result = document.getElementById("result");
+    resultCC = result.getContext("2d");
     canvas = document.getElementById("myCanvas");
-
+    ctx = canvas.getContext("2d");
     let src = "./images/face1.jpg";
     render(canvas, src);
     if (imgWarper) {
@@ -45,6 +47,8 @@ $(document).ready(() => {
     vidCanvas.height = vid_height;
     overlay.width = vid_width;
     overlay.height = vid_height;
+    result.width = $(document).innerWidth();
+    result.height = $(document).innerHeight();
 
     ctrack.start(vidCanvas);
 });
@@ -76,7 +80,7 @@ const changeIndex = () => {
 };
 const addPoints = () => {
     console.log(imgWarper);
-    $.getJSON("../images/positions.json", function(positions) {
+    $.getJSON("./images/positions.json", function(positions) {
         positions.forEach((el, index) => {
             console.log(el);
             let q = new ImgWarper.Point(el.x, el.y);
@@ -90,6 +94,10 @@ const addPoints = () => {
             moveUnit.push(getUnit(oriPoints[index], dstPoints[index]));
         });
         staticPos = [
+            { x: 50, y: 50 },
+            { x: 50, y: 1200 },
+            { x: 750, y: 50 },
+            { x: 750, y: 1200 },
             { x: 150, y: 100 },
             { x: 150, y: 325 },
             { x: 150, y: 550 },
@@ -137,12 +145,22 @@ const animate = () => {
             }
         });
         imgWarper.warp(oriPoints, currentPoint);
+
+        resultCC.save();
+        resultCC.translate(result.width, 0);
+        resultCC.scale(
+            result.height / canvas.width,
+            result.height / canvas.width
+        );
+        resultCC.rotate(Math.PI / 2);
+        // resultCC.translate(result.width / 2, 0);
+        resultCC.drawImage(canvas, 0, 0);
+        resultCC.restore();
         this.redrawCanvas();
         window.requestAnimationFrame(animate);
     }
 };
 const render = (canvas, src) => {
-    let ctx = canvas.getContext("2d");
     let image = new Image();
     image.onload = function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -150,7 +168,6 @@ const render = (canvas, src) => {
         canvas.height = image.height;
         ctx.drawImage(image, 0, 0, image.width, image.height);
         let imageData = ctx.getImageData(0, 0, image.width, image.height);
-        console.log(imageData);
         ctx.clearRect(0, 0, image.width, image.height);
         imgWarper = new ImgWarper.Warper(canvas, imageData);
         addPoints();
@@ -196,8 +213,8 @@ const camLoop = () => {
                 (newLeftEye.y - newRightEye.y) ** 2
         );
         let positionScale = oriDis / newDis;
-        overlayCC.clearRect(0, 0, vid_width, vid_height);
-        ctrack.draw(overlay);
+        // overlayCC.clearRect(0, 0, vid_width, vid_height);
+        // ctrack.draw(overlay);
         newPos = [];
         let oriPos = { x: 478, y: 320 };
         let trans = {

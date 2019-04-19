@@ -149,8 +149,8 @@ const animate = () => {
         resultCC.save();
         resultCC.translate(result.width, 0);
         resultCC.scale(
-            result.height / canvas.width,
-            result.height / canvas.width
+            result.width / canvas.height,
+            result.width / canvas.height
         );
         resultCC.rotate(Math.PI / 2);
         // resultCC.translate(result.width / 2, 0);

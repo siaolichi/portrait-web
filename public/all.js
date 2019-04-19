@@ -147,10 +147,10 @@ const animate = () => {
         imgWarper.warp(oriPoints, currentPoint);
 
         resultCC.save();
-        resultCC.translate(result.width, 0);
+        resultCC.translate(result.width+3, -3);
         resultCC.scale(
-            result.width / canvas.height,
-            result.width / canvas.height
+            (result.width+10) / canvas.height,
+            (result.width+10) / canvas.height
         );
         resultCC.rotate(Math.PI / 2);
         // resultCC.translate(result.width / 2, 0);

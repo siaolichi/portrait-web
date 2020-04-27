@@ -198,6 +198,13 @@ const drawVideo = video => {
     vidCtx.restore();
 };
 const camLoop = () => {
+    /*
+     left eye 32
+     right eye 27
+     left face 1
+     right face 13
+     buttom 7
+    */
     var positions = ctrack.getCurrentPosition();
     if (positions) {
         oriLeftEye = { x: 415, y: 305 };
